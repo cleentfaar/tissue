@@ -15,8 +15,8 @@ but adapters for other engines are underway. If you don't feel like waiting, why
 ### Documentation
 
 - [Installation](Resources/doc/installation.md)
-- [Usage](Resources/doc/usage.md) (Coming soon!)
-- [Contributing](Resources/doc/contributing.md) (Coming soon!)
+- [Usage](Resources/doc/usage.md)
+- [Contributing](Resources/doc/contributing.md)
 
 
 ### FAQ
@@ -25,4 +25,3 @@ but adapters for other engines are underway. If you don't feel like waiting, why
 
 **A:** I don't always have the time to make new stuff so if you would like to contribute adapters feel free to submit
 an issue or an PR for it! Take a look at the [contributing guide](Resources/doc/contributing.md) for instructions, thanks!
-
