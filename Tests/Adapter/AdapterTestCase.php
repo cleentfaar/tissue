@@ -30,7 +30,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getPathToTestFile($name)
     {
-        return sprintf(__DIR__ . '/../res/%s', $name);
+        return sprintf(__DIR__ . '/../Fixtures/%s', $name);
     }
 
     /**

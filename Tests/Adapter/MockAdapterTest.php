@@ -2,7 +2,6 @@
 
 namespace CL\Tissue\Tests\Adapter;
 
-use CL\Tissue\Adapter\MockAdapter;
 use CL\Tissue\Model\ScanResult;
 
 class MockAdapterTest extends AdapterTestCase

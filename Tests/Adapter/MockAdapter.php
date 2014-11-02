@@ -1,7 +1,8 @@
 <?php
 
-namespace CL\Tissue\Adapter;
+namespace CL\Tissue\Tests\Adapter;
 
+use CL\Tissue\Adapter\AbstractAdapter;
 use CL\Tissue\Model\ScanResult;
 
 class MockAdapter extends AbstractAdapter
@@ -17,6 +18,13 @@ class MockAdapter extends AbstractAdapter
             $files = $paths;
         }
 
-        return new ScanResult($paths, $files, []);
+        $detections = [];
+        foreach ($files as $path) {
+            if (stristr($path, 'virus')) {
+                $detections[] = $path;
+            }
+        }
+
+        return new ScanResult($paths, $files, $detections);
     }
 }
