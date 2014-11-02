@@ -1,0 +1,39 @@
+{
+  "name": "cleentfaar/tissue",
+  "description": "A PHP library that scans your files for viruses using the adapter of your choice",
+  "keywords": [
+    "anti-virus",
+    "virus",
+    "clamav",
+    "security"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cas Leentfaar",
+      "homepage": "https://github.com/cleentfaar",
+      "email": "info@casleentfaar.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "symfony/options-resolver": "~2.5",
+    "symfony/process": "~2.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.2"
+  },
+  "suggests": {
+    "cleentfaar/tissue-clamav-adapter": "The ClamAV adapter for scanning your files using the ClamAV anti-virus engine",
+    "cleentfaar/tissue-clamavphp-adapter": "The ClamAV PHP adapter for scanning your files using the PHP-version of the ClamAV anti-virus engine"
+  },
+  "autoload": {
+    "psr-4": {
+      "CL\\Tissue\\": ""
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
+}
