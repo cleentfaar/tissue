@@ -23,42 +23,25 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    protected function getPathToCleanFile()
+    public static function getPathToCleanFile()
     {
-        return $this->getPathToFixture('clean.txt');
+        return self::getPathToFixture('clean.txt');
     }
 
     /**
      * @return string
      */
-    protected function getPathToCleanFileAlternative()
+    public static function getPathToCleanFileAlternative()
     {
-        return $this->getPathToFixture('clean_alt.txt');
+        return self::getPathToFixture('clean_alt.txt');
     }
 
     /**
      * @return string
      */
-    protected function getPathToInfectedFile()
+    public static function getPathToInfectedFile()
     {
-        return $this->getPathToFixture('virus.txt');
-    }
-
-    /**
-     * @param string      $name
-     * @param string|null $serverKey
-     *
-     * @return string
-     */
-    protected function findExecutable($name, $serverKey = null)
-    {
-        if ($serverKey && isset($_SERVER[$serverKey])) {
-            return $_SERVER[$serverKey];
-        }
-
-        $finder = new ExecutableFinder();
-
-        return $finder->find($name);
+        return self::getPathToFixture('virus.txt');
     }
 
     /**
@@ -66,7 +49,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    protected function getPathToFixture($name)
+    public static function getPathToFixture($name)
     {
         return sprintf('%s/../Fixtures/%s', __DIR__, $name);
     }
@@ -131,6 +114,23 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $actualResult->getFiles());
         $this->assertCount(1, $actualResult->getDetections());
+    }
+
+    /**
+     * @param string      $name
+     * @param string|null $serverKey
+     *
+     * @return string
+     */
+    protected function findExecutable($name, $serverKey = null)
+    {
+        if ($serverKey && isset($_SERVER[$serverKey])) {
+            return $_SERVER[$serverKey];
+        }
+
+        $finder = new ExecutableFinder();
+
+        return $finder->find($name);
     }
 
     /**
