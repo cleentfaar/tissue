@@ -2,6 +2,8 @@
 
 namespace CL\Tissue\Adapter;
 
+use CL\Tissue\Model\Detection;
+use CL\Tissue\Model\ScanResult;
 use Symfony\Component\Process\ProcessBuilder;
 
 abstract class AbstractAdapter implements AdapterInterface
@@ -25,6 +27,41 @@ abstract class AbstractAdapter implements AdapterInterface
     public function getTimeout()
     {
         return $this->timeout;
+    }
+
+    /**
+     * @param array $paths
+     * @param array $options
+     *
+     * @return ScanResult
+     */
+    protected function scanArray(array $paths, array $options)
+    {
+        $files = [];
+        $detections = [];
+        $scannedPaths = [];
+        foreach ($paths as $path) {
+            $result = $this->scan($path, $options);
+            $files = array_merge($result->getFiles(), $files);
+            $detections = array_merge($result->getDetections(), $detections);
+            $scannedPaths[] = $path;
+        }
+
+        return new ScanResult($scannedPaths, $files, $detections);
+    }
+
+    /**
+     * @param $path
+     * @param int $type
+     * @param null $description
+     *
+     * @return Detection
+     */
+    protected function createDetection($path, $type = Detection::TYPE_VIRUS, $description = null)
+    {
+        $detection = new Detection($path, $type, $description);
+
+        return $detection;
     }
 
     /**

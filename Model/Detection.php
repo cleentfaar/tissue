@@ -17,13 +17,20 @@ class Detection
     protected $path;
 
     /**
-     * @param string $path
-     * @param int    $type
+     * @var string
      */
-    public function __construct($path, $type = self::TYPE_VIRUS)
+    protected $description;
+
+    /**
+     * @param string      $path
+     * @param int         $type
+     * @param string|null $description
+     */
+    public function __construct($path, $type = self::TYPE_VIRUS, $description = null)
     {
-        $this->type = $type;
         $this->path = $path;
+        $this->type = $type;
+        $this->description = $description;
     }
 
     /**
@@ -40,5 +47,13 @@ class Detection
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
