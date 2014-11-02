@@ -3,7 +3,6 @@
 namespace CL\Tissue\Tests\Adapter;
 
 use CL\Tissue\Adapter\AdapterInterface;
-use CL\Tissue\Model\ScanResult;
 use Symfony\Component\Process\ExecutableFinder;
 
 abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
@@ -74,6 +73,8 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests scanning of a clean file, without a virus
+     *
+     * @group integration
      */
     public function testScanWithoutVirus()
     {
@@ -85,6 +86,8 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests scanning of a file with a (faked) virus
+     *
+     * @group integration
      */
     public function testScanWithVirus()
     {
@@ -96,6 +99,8 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests scanning of a file with a (faked) virus
+     *
+     * @group integration
      */
     public function testScanMultipleWithoutVirus()
     {
@@ -112,6 +117,8 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests scanning of a file with a (faked) virus
+     *
+     * @group integration
      */
     public function testScanMultipleWithVirus()
     {
