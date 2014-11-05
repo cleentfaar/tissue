@@ -16,9 +16,8 @@ class DetectionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetType()
     {
-        $path = 'foobar1.txt';
         $type = Detection::TYPE_VIRUS;
-        $detection = new Detection($path, $type);
+        $detection = new Detection('foobar1.txt', $type);
 
         $this->assertEquals($type, $detection->getType());
     }

@@ -20,7 +20,7 @@ class MockAdapter extends AbstractAdapter
 
         $detections = [];
         foreach ($files as $path) {
-            if (stristr($path, 'virus')) {
+            if (stristr($path, 'virus') || stristr(file_get_contents($path), 'EICAR')) {
                 $detections[] = $path;
             }
         }
