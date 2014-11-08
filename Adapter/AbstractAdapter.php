@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Tissue library.
+ *
+ * (c) Cas Leentfaar <info@casleentfaar.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CL\Tissue\Adapter;
 
 use CL\Tissue\Model\Detection;
@@ -37,13 +46,13 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected function scanArray(array $paths, array $options)
     {
-        $files = [];
-        $detections = [];
+        $files        = [];
+        $detections   = [];
         $scannedPaths = [];
         foreach ($paths as $path) {
-            $result = $this->scan($path, $options);
-            $files = array_merge($result->getFiles(), $files);
-            $detections = array_merge($result->getDetections(), $detections);
+            $result         = $this->scan($path, $options);
+            $files          = array_merge($result->getFiles(), $files);
+            $detections     = array_merge($result->getDetections(), $detections);
             $scannedPaths[] = $path;
         }
 
@@ -51,8 +60,8 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param $path
-     * @param int $type
+     * @param      $path
+     * @param int  $type
      * @param null $description
      *
      * @return Detection

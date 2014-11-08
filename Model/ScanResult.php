@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Tissue library.
+ *
+ * (c) Cas Leentfaar <info@casleentfaar.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CL\Tissue\Model;
 
 class ScanResult
@@ -27,8 +36,8 @@ class ScanResult
     public function __construct($pathScanned, array $files, array $detections)
     {
         $this->pathScanned = $pathScanned;
-        $this->files = $files;
-        $this->detections = $detections;
+        $this->files       = $files;
+        $this->detections  = $detections;
     }
 
     /**

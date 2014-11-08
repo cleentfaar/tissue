@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Tissue library.
+ *
+ * (c) Cas Leentfaar <info@casleentfaar.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CL\Tissue\Model;
 
 class Detection
@@ -28,8 +37,8 @@ class Detection
      */
     public function __construct($path, $type = self::TYPE_VIRUS, $description = null)
     {
-        $this->path = $path;
-        $this->type = $type;
+        $this->path        = $path;
+        $this->type        = $type;
         $this->description = $description;
     }
 
