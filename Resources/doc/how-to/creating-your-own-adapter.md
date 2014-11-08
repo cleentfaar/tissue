@@ -18,4 +18,3 @@ To get you started on the right track, here's what you need:
   1. Running your virus-scanner's detection engine (targeting the files given with the `$paths` argument)
   2. Catch the output from your virus-scanner's result
   3. Converting the output into an instance of `ScanResult`
-

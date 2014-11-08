@@ -21,5 +21,6 @@ using the phpunit version bundled with the library, like this:
 
 ### Sharing your adapters
 
-Check out the [TissueBundle's contributing doc](https://github.com/cleentfaar/CLTissueBundle/Resources/doc/contributing.md)
-for more information on  getting your adapters included.
+The [TissueBundle](https://github.com/cleentfaar/CLTissueBundle) is open to implement new adapters if you wish to share them.
+Check out the bundle's [contribution documentation](https://github.com/cleentfaar/CLTissueBundle/Resources/doc/contributing.md)
+for more information.
