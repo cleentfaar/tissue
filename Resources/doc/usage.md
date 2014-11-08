@@ -2,22 +2,23 @@
 
 By now you probably understood that this library provides adapter-classes that can implement various virus-scanner engines.
 
-As each adapter can have very different configuration requirements, exactly how you will need to create an adapter's-class
-is something you need to check out in the respective adapter's documentation. For instance, the ClamAVAdapter's documentation
-can be found [here](https://github.com/cleentfaar/tissue-clamav-adapter/Resources/doc/usage.md).
+Since each adapter can have very different configuration requirements, exactly what arguments you will need to construct an
+adapter's-class is something you need to check out in the respective adapter's documentation.
 
-Each adapter's repository has a `Resources/doc/usage.md` document that will give you more details about what is needed for it to work.
+For instance, the ClamAVAdapter's documentation can be found [here](https://github.com/cleentfaar/tissue-clamav-adapter/Resources/doc/usage.md).
 
-Having been constructed, all adapters work the same way in that they scan a given path(s) and return an instance of `ScanResult`.
+**NOTE: Like the `clamav` adapter, every adapter has a `Resources/doc/usage.md` document that will give you more details about what is needed for it to work.**
 
-To give you a general idea of how each adapter works, here's an example of the [ClamAVAdapter](https://github.com/cleentfaar/tissue-clamav-adapter)
-being used to scan a scary file for viruses...:
+Having been constructed, all adapters work the same way: they scan a given path(s) and return an instance of `ScanResult`.
+
+To give you a general idea of how each adapter works, here's an example of an imaginative AcmeScannerAdapter.
+You will still need to check out the your adapter's documentation to see how to set it up.
 
 ```php
 <?php
 # path/to/your/app/scanner.php
 
-$adapter = new ClamAVAdapter('/usr/bin/clamscan');
+$adapter = new AcmeScannerAdapter('...');
 $result = $adapter->scan('/path/to/scary/file');
 
 // do we have a virus?

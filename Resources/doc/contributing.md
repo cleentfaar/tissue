@@ -19,7 +19,7 @@ using the phpunit version bundled with the library, like this:
     $ ./bin/phpunit
 
 
-### New adapters
+### Sharing your adapters
 
-If you want to add a new adapter to the existing ones, you can get started by taking a look at how the [Clam AV adapter](https://github.com/cleentfaar/tissue-clamav-adapter)
-was made, and base your adapter off that.
+Check out the [TissueBundle's contributing doc](https://github.com/cleentfaar/CLTissueBundle/Resources/doc/contributing.md)
+for more information on  getting your adapters included.
