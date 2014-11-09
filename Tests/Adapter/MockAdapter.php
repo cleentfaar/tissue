@@ -29,6 +29,8 @@ class MockAdapter extends AbstractAdapter
 
         $detections = [];
         foreach ($files as $path) {
+            // NOTE: this adapter does a really lame job at detecting infections, but it's on purpose!
+            // This adapter should only be used for simple functional tests.
             if (stristr($path, 'virus') || stristr(file_get_contents($path), 'EICAR')) {
                 $detections[] = $path;
             }

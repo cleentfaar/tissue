@@ -34,7 +34,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToCleanFile()
     {
-        return self::getPathToFixture('clean.txt');
+        return self::getPathToFixture(__FILE__);
     }
 
     /**
@@ -42,7 +42,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToCleanFileAlternative()
     {
-        return self::getPathToFixture('clean_alt.txt');
+        return self::getPathToFixture(__DIR__);
     }
 
     /**
@@ -50,7 +50,15 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToInfectedFile()
     {
-        return self::getPathToFixture('virus.txt');
+        $path = self::getPathToFixture('virus.txt');
+        if (!file_exists($path)) {
+            // this let's us keep the repo clean (if even though it's a false-positive)
+            $fh = fopen($path, 'w+');
+            fwrite($fh, 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*');
+            fclose($fh);
+        }
+
+        return $path;
     }
 
     /**
@@ -140,6 +148,16 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $finder = new ExecutableFinder();
 
         return $finder->find($name);
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        // make sure we clean up any (faked) infections
+        if (file_exists($this->getPathToInfectedFile())) {
+            unlink($this->getPathToInfectedFile());
+        }
     }
 
     /**
