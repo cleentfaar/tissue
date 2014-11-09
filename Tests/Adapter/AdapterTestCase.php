@@ -12,6 +12,7 @@
 namespace CL\Tissue\Tests\Adapter;
 
 use CL\Tissue\Adapter\AdapterInterface;
+use CL\Tissue\Model\Detection;
 use Symfony\Component\Process\ExecutableFinder;
 
 abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
@@ -29,6 +30,9 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $this->adapter = $this->createAdapter();
     }
 
+    /**
+     * Tests whether the scanning of a file returns the correct instance
+     */
     public function testScan()
     {
         $actualResult = $this->adapter->scan([self::getPathToCleanFile()]);
@@ -36,6 +40,9 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\CL\Tissue\Model\ScanResult', $actualResult);
     }
 
+    /**
+     * Tests whether the scanning of a single (clean) file returns the correct number of files (1)
+     */
     public function testScanFile()
     {
         $actualResult = $this->adapter->scan([self::getPathToCleanFile()]);
@@ -43,6 +50,9 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $actualResult->getFiles());
     }
 
+    /**
+     * Tests whether the scanning of a (clean) directory containing one file returns the correct number of files (1)
+     */
     public function testScanDir()
     {
         $actualResult = $this->adapter->scan([self::getPathToCleanDir()]);
@@ -75,7 +85,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests scanning of a file with a (faked) virus
+     * Tests scanning of a directory with a clean file in it
      *
      * @group integration
      */
@@ -87,7 +97,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests scanning of a dir with a (faked) virus in it
+     * Tests scanning of a directory with a (faked) virus in it
      *
      * @group integration
      */
@@ -96,6 +106,23 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $actualResult = $this->adapter->scan([self::getPathToInfectedDir()]);
 
         $this->assertCount(1, $actualResult->getDetections());
+    }
+
+    /**
+     * Tests whether the adapter passes the (standardized) test of detecting the Eicar signature
+     * Actual description may be different but should at least contain 'Eicar-Test-Signature'
+     *
+     * @link http://www.eicar.com
+     *
+     * @group integration
+     */
+    public function testEicarDetection()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToEicarFile()]);
+
+        $this->assertCount(1, $actualResult->getDetections());
+        $this->assertEquals(Detection::TYPE_VIRUS, $actualResult->getDetections()[0]->getType());
+        $this->assertContains('Eicar-Test-Signature', $actualResult->getDetections()[0]->getDescription());
     }
 
     /**
@@ -117,9 +144,17 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @return string
      */
-    public static function getPathToInfectedFile()
+    public static function getPathToEicarFile()
     {
         return self::getPathToFixture('infected/infected.txt');
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPathToInfectedFile()
+    {
+        return self::getPathToEicarFile();
     }
 
     /**
