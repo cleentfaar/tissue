@@ -12,7 +12,6 @@
 namespace CL\Tissue\Tests\Adapter;
 
 use CL\Tissue\Adapter\AdapterInterface;
-use Symfony\Component\Process\ExecutableFinder;
 
 abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -29,20 +28,89 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
         $this->adapter = $this->createAdapter();
     }
 
-    /**
-     * @return string
-     */
-    public static function getPathToCleanFile()
+    public function testScan()
     {
-        return self::getPathToFixture(__FILE__);
+        $actualResult = $this->adapter->scan([self::getPathToCleanFile()]);
+
+        $this->assertInstanceOf('\CL\Tissue\Model\ScanResult', $actualResult);
+    }
+
+    public function testScanFile()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToCleanFile()]);
+
+        $this->assertCount(1, $actualResult->getFiles());
+    }
+
+    public function testScanDir()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToCleanDir()]);
+
+        $this->assertCount(1, $actualResult->getFiles());
+    }
+
+    /**
+     * Tests scanning of a clean file, without a virus
+     *
+     * @group integration
+     */
+    public function testScanCleanFile()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToCleanFile()]);
+
+        $this->assertCount(0, $actualResult->getDetections());
+    }
+
+    /**
+     * Tests scanning of a file with a (faked) virus
+     *
+     * @group integration
+     */
+    public function testScanInfectedFile()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToInfectedFile()]);
+
+        $this->assertCount(1, $actualResult->getDetections());
+    }
+
+    /**
+     * Tests scanning of a file with a (faked) virus
+     *
+     * @group integration
+     */
+    public function testScanCleanDir()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToCleanDir()]);
+
+        $this->assertCount(0, $actualResult->getDetections());
+    }
+
+    /**
+     * Tests scanning of a dir with a (faked) virus in it
+     *
+     * @group integration
+     */
+    public function testScanInfectedDir()
+    {
+        $actualResult = $this->adapter->scan([self::getPathToInfectedDir()]);
+
+        $this->assertCount(1, $actualResult->getDetections());
     }
 
     /**
      * @return string
      */
-    public static function getPathToCleanFileAlternative()
+    public static function getPathToCleanFile()
     {
-        return self::getPathToFixture(__DIR__);
+        return self::getPathToFixture('clean/clean.txt');
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPathToCleanDir()
+    {
+        return self::getPathToFixture('clean');
     }
 
     /**
@@ -50,15 +118,15 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToInfectedFile()
     {
-        $path = self::getPathToFixture('virus.txt');
-        if (!file_exists($path)) {
-            // this let's us keep the repo clean (if even though it's a false-positive)
-            $fh = fopen($path, 'w+');
-            fwrite($fh, 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*');
-            fclose($fh);
-        }
+        return self::getPathToFixture('infected/infected.txt');
+    }
 
-        return $path;
+    /**
+     * @return string
+     */
+    public static function getPathToInfectedDir()
+    {
+        return self::getPathToFixture('infected');
     }
 
     /**
@@ -68,96 +136,7 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToFixture($name)
     {
-        return sprintf('%s/../Fixtures/%s', __DIR__, $name);
-    }
-
-    /**
-     * Tests scanning of a clean file, without a virus
-     *
-     * @group integration
-     */
-    public function testScanWithoutVirus()
-    {
-        $actualResult = $this->adapter->scan($this->getPathToCleanFile());
-
-        $this->assertCount(1, $actualResult->getFiles());
-        $this->assertCount(0, $actualResult->getDetections());
-    }
-
-    /**
-     * Tests scanning of a file with a (faked) virus
-     *
-     * @group integration
-     */
-    public function testScanWithVirus()
-    {
-        $actualResult = $this->adapter->scan($this->getPathToInfectedFile());
-
-        $this->assertCount(1, $actualResult->getFiles());
-        $this->assertCount(1, $actualResult->getDetections());
-    }
-
-    /**
-     * Tests scanning of a file with a (faked) virus
-     *
-     * @group integration
-     */
-    public function testScanMultipleWithoutVirus()
-    {
-        $paths = [
-            $this->getPathToCleanFile(),
-            $this->getPathToCleanFileAlternative()
-        ];
-
-        $actualResult = $this->adapter->scan($paths);
-
-        $this->assertCount(2, $actualResult->getFiles());
-        $this->assertCount(0, $actualResult->getDetections());
-    }
-
-    /**
-     * Tests scanning of a file with a (faked) virus
-     *
-     * @group integration
-     */
-    public function testScanMultipleWithVirus()
-    {
-        $paths = [
-            $this->getPathToCleanFile(),
-            $this->getPathToInfectedFile()
-        ];
-
-        $actualResult = $this->adapter->scan($paths);
-
-        $this->assertCount(2, $actualResult->getFiles());
-        $this->assertCount(1, $actualResult->getDetections());
-    }
-
-    /**
-     * @param string      $name
-     * @param string|null $serverKey
-     *
-     * @return string
-     */
-    protected function findExecutable($name, $serverKey = null)
-    {
-        if ($serverKey && isset($_SERVER[$serverKey])) {
-            return $_SERVER[$serverKey];
-        }
-
-        $finder = new ExecutableFinder();
-
-        return $finder->find($name);
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        // make sure we clean up any (faked) infections
-        if (file_exists($this->getPathToInfectedFile())) {
-            unlink($this->getPathToInfectedFile());
-        }
+        return realpath(sprintf('%s/../Fixtures/%s', __DIR__, $name));
     }
 
     /**

@@ -12,7 +12,7 @@ For instance, the ClamAVAdapter's documentation can be found [here](https://gith
 Having been constructed, all adapters work the same way: they scan a given path(s) and return an instance of `ScanResult`.
 
 To give you a general idea of how each adapter works, here's an example of an imaginative AcmeScannerAdapter.
-You will still need to check out the your adapter's documentation to see how to set it up.
+To be sure, you still need to check out your specific adapter's documentation for instructions on how to set it up.
 
 ```php
 <?php

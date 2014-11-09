@@ -12,57 +12,15 @@
 namespace CL\Tissue\Adapter;
 
 use CL\Tissue\Model\Detection;
-use CL\Tissue\Model\ScanResult;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
     /**
-     * @var int|null
-     */
-    protected $timeout;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTimeout($timeout)
-    {
-        $this->timeout = $timeout;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    /**
-     * @param array $paths
-     * @param array $options
-     *
-     * @return ScanResult
-     */
-    protected function scanArray(array $paths, array $options)
-    {
-        $files        = [];
-        $detections   = [];
-        $scannedPaths = [];
-        foreach ($paths as $path) {
-            $result         = $this->scan($path, $options);
-            $files          = array_merge($result->getFiles(), $files);
-            $detections     = array_merge($result->getDetections(), $detections);
-            $scannedPaths[] = $path;
-        }
-
-        return new ScanResult($scannedPaths, $files, $detections);
-    }
-
-    /**
-     * @param      $path
-     * @param int  $type
-     * @param null $description
+     * @param string      $path
+     * @param int         $type
+     * @param string|null $description
      *
      * @return Detection
      */
@@ -74,20 +32,43 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * Creates a new process builder.
+     * Finds the path to a given executable on this machine
      *
-     * @param array $arguments An optional array of arguments
+     * If the optional $serverKey argument is provided, an attempt is made
+     * to retrieve the path from the given key in $_SERVER
+     *
+     * @param string      $name
+     * @param string|null $serverKey
+     *
+     * @return string
+     */
+    protected function findExecutable($name, $serverKey = null)
+    {
+        if ($serverKey && isset($_SERVER[$serverKey])) {
+            return $_SERVER[$serverKey];
+        }
+
+        $finder = new ExecutableFinder();
+
+        return $finder->find($name);
+    }
+
+    /**
+     * Creates a new process builder that your might use to interact with your virus-scanner's executable
+     *
+     * @param array    $arguments An optional array of arguments
+     * @param int|null $timeout   An optional number of seconds for the process' timeout limit
      *
      * @return ProcessBuilder A new process builder
      *
      * @codeCoverageIgnore
      */
-    protected function createProcessBuilder(array $arguments = [])
+    protected function createProcessBuilder(array $arguments = [], $timeout = null)
     {
         $pb = new ProcessBuilder($arguments);
 
-        if (null !== $this->timeout) {
-            $pb->setTimeout($this->timeout);
+        if (null !== $timeout) {
+            $pb->setTimeout($timeout);
         }
 
         return $pb;
