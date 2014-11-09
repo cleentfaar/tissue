@@ -12,7 +12,6 @@
 namespace CL\Tissue\Adapter;
 
 use CL\Tissue\Model\Detection;
-use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
 abstract class AbstractAdapter implements AdapterInterface
@@ -29,28 +28,6 @@ abstract class AbstractAdapter implements AdapterInterface
         $detection = new Detection($path, $type, $description);
 
         return $detection;
-    }
-
-    /**
-     * Finds the path to a given executable on this machine
-     *
-     * If the optional $serverKey argument is provided, an attempt is made
-     * to retrieve the path from the given key in $_SERVER
-     *
-     * @param string      $name
-     * @param string|null $serverKey
-     *
-     * @return string
-     */
-    protected function findExecutable($name, $serverKey = null)
-    {
-        if ($serverKey && isset($_SERVER[$serverKey])) {
-            return $_SERVER[$serverKey];
-        }
-
-        $finder = new ExecutableFinder();
-
-        return $finder->find($name);
     }
 
     /**

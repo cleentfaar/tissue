@@ -12,6 +12,7 @@
 namespace CL\Tissue\Tests\Adapter;
 
 use CL\Tissue\Adapter\AdapterInterface;
+use Symfony\Component\Process\ExecutableFinder;
 
 abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -137,6 +138,23 @@ abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
     public static function getPathToFixture($name)
     {
         return realpath(sprintf('%s/../Fixtures/%s', __DIR__, $name));
+    }
+
+    /**
+     * @param string      $name
+     * @param string|null $serverKey
+     *
+     * @return string
+     */
+    protected function findExecutable($name, $serverKey = null)
+    {
+        if ($serverKey && isset($_SERVER[$serverKey])) {
+            return $_SERVER[$serverKey];
+        }
+
+        $finder = new ExecutableFinder();
+
+        return $finder->find($name);
     }
 
     /**
