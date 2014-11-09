@@ -13,6 +13,11 @@ namespace CL\Tissue\Tests\Adapter;
 
 class AdapterTest extends AdapterTestCase
 {
+    public function testEicarDetection()
+    {
+        $this->markTestSkipped('Not testable with mock adapter');
+    }
+
     /**
      * {@inheritdoc}
      */
