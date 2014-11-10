@@ -14,9 +14,9 @@ namespace CL\Tissue\Model;
 class ScanResult
 {
     /**
-     * @var string|array
+     * @var array
      */
-    protected $pathScanned;
+    protected $paths;
 
     /**
      * @var array
@@ -29,23 +29,23 @@ class ScanResult
     protected $detections;
 
     /**
-     * @param string|array $pathScanned
-     * @param array        $files
-     * @param Detection[]  $detections
+     * @param array       $pathsScanned
+     * @param array       $filesScanned
+     * @param Detection[] $detectionsFound
      */
-    public function __construct($pathScanned, array $files, array $detections)
+    public function __construct(array $pathsScanned, array $filesScanned, array $detectionsFound)
     {
-        $this->pathScanned = $pathScanned;
-        $this->files       = $files;
-        $this->detections  = $detections;
+        $this->paths      = $pathsScanned;
+        $this->files      = $filesScanned;
+        $this->detections = $detectionsFound;
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function hasVirus()
+    public function getPaths()
     {
-        return count($this->getDetections()) > 0;
+        return $this->paths;
     }
 
     /**
@@ -62,5 +62,13 @@ class ScanResult
     public function getDetections()
     {
         return $this->detections;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasVirus()
+    {
+        return count($this->getDetections()) > 0;
     }
 }

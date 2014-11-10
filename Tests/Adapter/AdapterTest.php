@@ -11,7 +11,7 @@
 
 namespace CL\Tissue\Tests\Adapter;
 
-class AdapterTest extends AdapterTestCase
+class AdapterTest extends AbstractAdapterTestCase
 {
     public function testEicarDetection()
     {

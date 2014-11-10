@@ -15,7 +15,7 @@ use CL\Tissue\Adapter\AdapterInterface;
 use CL\Tissue\Model\Detection;
 use Symfony\Component\Process\ExecutableFinder;
 
-abstract class AdapterTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractAdapterTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var AdapterInterface
