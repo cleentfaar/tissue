@@ -22,7 +22,7 @@ class ScanResultTest extends \PHPUnit_Framework_TestCase
             'foobar1.txt',
         ];
 
-        $scanResult  = new ScanResult($path, $files, []);
+        $scanResult  = new ScanResult([$path], $files, []);
         $actualFiles = $scanResult->getFiles();
 
         $this->assertEquals($files, $actualFiles);
@@ -36,7 +36,7 @@ class ScanResultTest extends \PHPUnit_Framework_TestCase
         ];
         $detections = $files;
 
-        $scanResult = new ScanResult($path, $files, $detections);
+        $scanResult = new ScanResult([$path], $files, $detections);
         $this->assertEquals($detections, $scanResult->getDetections());
         $this->assertTrue($scanResult->hasVirus());
     }

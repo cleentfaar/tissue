@@ -67,8 +67,8 @@ abstract class AbstractAdapter implements AdapterInterface
     protected function resolveOptions(array $options)
     {
         if ($this->resolver === null) {
-            $resolver = new OptionsResolver();
-            $this->configureOptions($resolver);
+            $this->resolver = new OptionsResolver();
+            $this->configureOptions($this->resolver);
         }
 
         return $this->resolver->resolve($options);
@@ -92,7 +92,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if (is_dir($path)) {
             $paths = [$path];
 
-            return $this->scanDir($path, $paths, $files, $detections);
+            return $this->scanDir($path);
         } else {
             $files[] = $path;
             if ($detection = $this->detect($path)) {
@@ -105,13 +105,10 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * @param string $dir
-     * @param array  $currentPaths
-     * @param array  $currentFiles
-     * @param array  $currentDetections
      *
      * @return ScanResult
      */
-    protected function scanDir($dir, array &$currentPaths = [], array &$currentFiles = [], array &$currentDetections = [])
+    protected function scanDir($dir)
     {
         $fileinfos = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
         $files     = [];
@@ -123,10 +120,7 @@ abstract class AbstractAdapter implements AdapterInterface
             $files[] = $pathname;
         }
 
-        $result            = $this->scanArray($files);
-        $currentPaths      = array_merge($currentPaths, $result->getPaths());
-        $currentFiles      = array_merge($currentFiles, $result->getFiles());
-        $currentDetections = array_merge($currentDetections, $result->getDetections());
+        return $this->scanArray($files);
     }
 
     /**
@@ -165,9 +159,11 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param OptionsResolverInterface $optionsResolver
+     * @param OptionsResolverInterface $resolver
      */
-    abstract protected function configureOptions(OptionsResolverInterface $optionsResolver);
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+    }
 
     /**
      * @param string $path
