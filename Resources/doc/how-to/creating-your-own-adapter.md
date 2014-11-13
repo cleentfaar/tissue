@@ -32,13 +32,19 @@ Method b) If your scanner supports scanning of multiple files:
 ## Write a test case
 
 Every adapter should have at least one test-case which extends `AbstractAdapterTestCase`.
-You only have to make sure to return your adapter with the `createAdapter()` method:
+For most adapters, it's enough to simply return your adapter instance with the `createAdapter()` method:
 ```php
 <?php
 //...
-protected function createAdapter()
+class AcmeAdapterTestCase extends AbstractAdapterTestCase
 {
-    return AcmeAdapter();
+    /**
+     * {@inheritdoc}
+     */
+    protected function createAdapter()
+    {
+        return AcmeAdapter();
+    }
 }
 //...
 ```

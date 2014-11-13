@@ -13,20 +13,44 @@ namespace CL\Tissue\Adapter;
 
 use CL\Tissue\Model\Detection;
 use CL\Tissue\Model\ScanResult;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Process\ProcessBuilder;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var OptionsResolverInterface|null
+     */
+    private $resolver;
+
+    /**
      * {@inheritdoc}
      */
     public function scan(array $paths, array $options = [])
     {
-        $files      = [];
-        $detections = [];
+        $this->options = $this->resolveOptions($options);
+
+        return $this->scanArray($paths);
+    }
+
+    /**
+     * @param array $paths
+     *
+     * @return ScanResult
+     */
+    protected function scanArray(array $paths)
+    {
+        $files         = [];
+        $detections    = [];
 
         foreach ($paths as $path) {
-            $result     = $this->scanSingle($path, $options);
+            $result     = $this->scanSingle($path, $this->options);
             $paths      = array_merge($paths, $result->getPaths());
             $files      = array_merge($files, $result->getFiles());
             $detections = array_merge($detections, $result->getDetections());
@@ -36,12 +60,26 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        if ($this->resolver === null) {
+            $resolver = new OptionsResolver();
+            $this->configureOptions($resolver);
+        }
+
+        return $this->resolver->resolve($options);
+    }
+
+    /**
      * @param string $path
-     * @param array  $options
      *
      * @return ScanResult
      */
-    protected function scanSingle($path, array $options = [])
+    protected function scanSingle($path)
     {
         $files      = [];
         $detections = [];
@@ -54,7 +92,7 @@ abstract class AbstractAdapter implements AdapterInterface
         if (is_dir($path)) {
             $paths = [$path];
 
-            return $this->scanDir($path, $options, $paths, $files, $detections);
+            return $this->scanDir($path, $paths, $files, $detections);
         } else {
             $files[] = $path;
             if ($detection = $this->detect($path)) {
@@ -67,14 +105,13 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * @param string $dir
-     * @param array  $options
      * @param array  $currentPaths
      * @param array  $currentFiles
      * @param array  $currentDetections
      *
      * @return ScanResult
      */
-    protected function scanDir($dir, array $options, array &$currentPaths = [], array &$currentFiles = [], array &$currentDetections = [])
+    protected function scanDir($dir, array &$currentPaths = [], array &$currentFiles = [], array &$currentDetections = [])
     {
         $fileinfos = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
         $files     = [];
@@ -86,7 +123,7 @@ abstract class AbstractAdapter implements AdapterInterface
             $files[] = $pathname;
         }
 
-        $result            = $this->scan($files, $options);
+        $result            = $this->scanArray($files);
         $currentPaths      = array_merge($currentPaths, $result->getPaths());
         $currentFiles      = array_merge($currentFiles, $result->getFiles());
         $currentDetections = array_merge($currentDetections, $result->getDetections());
@@ -128,9 +165,14 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * @param OptionsResolverInterface $optionsResolver
+     */
+    abstract protected function configureOptions(OptionsResolverInterface $optionsResolver);
+
+    /**
      * @param string $path
      *
-     * @return ScanResult
+     * @return Detection|null
      */
     abstract protected function detect($path);
 }
