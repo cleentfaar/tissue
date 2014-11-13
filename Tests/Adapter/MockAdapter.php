@@ -12,8 +12,6 @@
 namespace CL\Tissue\Tests\Adapter;
 
 use CL\Tissue\Adapter\AbstractAdapter;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * MockAdapter for testing purposes
