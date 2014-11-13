@@ -16,10 +16,10 @@ use CL\Tissue\Model\ScanResult;
 interface AdapterInterface
 {
     /**
-     * @param string|array $paths
-     * @param array        $options
+     * @param array $paths
+     * @param array $options
      *
      * @return ScanResult
      */
-    public function scan($paths, array $options = []);
+    public function scan(array $paths, array $options = []);
 }

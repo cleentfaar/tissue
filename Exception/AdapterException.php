@@ -13,7 +13,7 @@ namespace CL\Tissue\Exception;
 
 use Symfony\Component\Process\Process;
 
-class AdapterException extends \RuntimeException implements Exception
+class AdapterException extends \RuntimeException
 {
     /**
      * @var string

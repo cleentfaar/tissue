@@ -20,22 +20,40 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function scan($paths, array $options = [])
+    public function scan(array $paths, array $options = [])
     {
-        if (is_array($paths)) {
-            return $this->scanArray($paths, $options);
-        }
-
         $files      = [];
         $detections = [];
-        $path       = realpath($paths);
+
+        foreach ($paths as $path) {
+            $result     = $this->scanSingle($path, $options);
+            $paths      = array_merge($paths, $result->getPaths());
+            $files      = array_merge($files, $result->getFiles());
+            $detections = array_merge($detections, $result->getDetections());
+        }
+
+        return new ScanResult($paths, $files, $detections);
+    }
+
+    /**
+     * @param string $path
+     * @param array  $options
+     *
+     * @return ScanResult
+     */
+    protected function scanSingle($path, array $options = [])
+    {
+        $files      = [];
+        $detections = [];
+        $path       = realpath($path);
 
         if (!$path) {
             throw new \InvalidArgumentException(sprintf('File to scan does not exist: %s', $path));
         }
 
         if (is_dir($path)) {
-            $paths = [$paths];
+            $paths = [$path];
+
             return $this->scanDir($path, $options, $paths, $files, $detections);
         } else {
             $files[] = $path;
@@ -45,27 +63,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
             return new ScanResult([$path], $files, $detections);
         }
-    }
-
-    /**
-     * @param array $paths
-     * @param array $options
-     *
-     * @return ScanResult
-     */
-    public function scanArray(array $paths, array $options = [])
-    {
-        $files      = [];
-        $detections = [];
-
-        foreach ($paths as $path) {
-            $result     = $this->scan($path, $options);
-            $paths      = array_merge($paths, $result->getPaths());
-            $files      = array_merge($files, $result->getFiles());
-            $detections = array_merge($detections, $result->getDetections());
-        }
-
-        return new ScanResult($paths, $files, $detections);
     }
 
     /**
@@ -89,7 +86,7 @@ abstract class AbstractAdapter implements AdapterInterface
             $files[] = $pathname;
         }
 
-        $result            = $this->scanArray($files, $options);
+        $result            = $this->scan($files, $options);
         $currentPaths      = array_merge($currentPaths, $result->getPaths());
         $currentFiles      = array_merge($currentFiles, $result->getFiles());
         $currentDetections = array_merge($currentDetections, $result->getDetections());
