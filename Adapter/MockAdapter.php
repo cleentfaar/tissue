@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CL\Tissue\Tests\Adapter;
-
-use CL\Tissue\Adapter\AbstractAdapter;
+namespace CL\Tissue\Adapter;
 
 /**
  * MockAdapter for testing purposes

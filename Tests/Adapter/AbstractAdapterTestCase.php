@@ -122,7 +122,8 @@ abstract class AbstractAdapterTestCase extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $actualResult->getDetections());
         $this->assertEquals(Detection::TYPE_VIRUS, $actualResult->getDetections()[0]->getType());
-        $this->assertContains('Eicar-Test-Signature', $actualResult->getDetections()[0]->getDescription());
+        $this->assertInternalType('string', $actualResult->getDetections()[0]->getDescription());
+        $this->assertContains('Eicar-Test-Signature', (string) $actualResult->getDetections()[0]->getDescription());
     }
 
     /**
@@ -172,7 +173,7 @@ abstract class AbstractAdapterTestCase extends \PHPUnit_Framework_TestCase
      */
     public static function getPathToFixture($name)
     {
-        return realpath(sprintf('%s/../Fixtures/%s', __DIR__, $name));
+        return realpath(sprintf('%s/../../Resources/fixtures/%s', __DIR__, $name));
     }
 
     /**

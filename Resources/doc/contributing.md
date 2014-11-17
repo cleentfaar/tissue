@@ -1,6 +1,5 @@
 ## Contributing
 
-
 ### Coding standards
 
 Your code should follow [Symfony's coding standards](http://symfony.com/doc/current/contributing/code/standards.html) as close as possible.
@@ -17,10 +16,3 @@ Please make sure the unit tests run without failures before - and after - contri
 using the phpunit version bundled with the library, like this:
 
     $ ./bin/phpunit
-
-
-### Sharing your adapters
-
-The [TissueBundle](https://github.com/cleentfaar/CLTissueBundle) is open to implement new adapters if you wish to share them.
-Check out the bundle's [contribution documentation](https://github.com/cleentfaar/CLTissueBundle/Resources/doc/contributing.md)
-for more information.

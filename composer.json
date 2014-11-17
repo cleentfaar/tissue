@@ -24,10 +24,6 @@
   "require-dev": {
     "phpunit/phpunit": "~4.2"
   },
-  "suggests": {
-    "cleentfaar/tissue-clamav-adapter": "A Tissue adapter to scan files using the ClamAV anti-virus engine",
-    "cleentfaar/tissue-clamavphp-adapter": "A Tissue adapter to scan files using the PHP-extension of the ClamAV anti-virus engine"
-  },
   "autoload": {
     "psr-4": {
       "CL\\Tissue\\": ""

@@ -5,8 +5,8 @@
 If there is no adapter yet for the virus-scanner you want to use, or if there are license issues that keep you from using
 any of the available adapters, you may want to think of creating an adapter for it.
 
-A good starting point for this is to simply take a look at how the existing [ClamAV adapter](https://github.com/cleentfaar/tissue-clamav-adapter)
-was made. It's code could be copied almost entirely, and just refactor it to something that fits your virus-scanner's requirements.
+A good starting point for this is to simply take a look at how the existing [ClamAV adapter](https://github.com/cleentfaar/tissue/Adapter/ClamAVAdapter)
+was made. It's code could be copied almost entirely, and just refactored to something that fits your virus-scanner's requirements.
 
 I will go through the basic procedures you need to follow below.
 

@@ -40,7 +40,6 @@ class AdapterException extends \RuntimeException
     public static function fromProcess(Process $process)
     {
         $message = sprintf("An error occurred while running:\n%s", $process->getCommandLine());
-
         $errorOutput = $process->getErrorOutput();
         if (!empty($errorOutput)) {
             $message .= "\n\nError Output:\n" . str_replace("\r", '', $errorOutput);
