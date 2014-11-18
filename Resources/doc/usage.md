@@ -17,3 +17,8 @@ $result->getFiles(); // returns all the files that were scanned during the opera
 // what whas detected then?
 $result->getDetections(); // returns an array of `Detection` instances if one or more viruses were detected
 ```
+
+
+### Real world example
+
+If you want to see an adapter for a real virus-scanner, check out the [ClamAv](https://github.com/cleentfaar/tissue-clamav-adapter) adapter.

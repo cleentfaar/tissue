@@ -1,6 +1,7 @@
 # Tissue [![License](https://poser.pugx.org/cleentfaar/tissue/license.svg)](https://packagist.org/packages/cleentfaar/tissue)
 
-A PHP library that scans your files for viruses. The default implementation uses the ClamAV engine.
+A PHP library that scans your files for viruses. It does this by providing adapters for various virus-scanning software.
+Currently, the only adapter available is the `ClamAvAdapter` which, obviously, integrates the ClamAV scanner into your projects.
 
 **NOTE:** If your project is built on top of the Symfony Framework, you are much better off using the [TissueBundle](https://github.com/cleentfaar/CLTissueBundle)
 that was specially made for it.
