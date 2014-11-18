@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace CL\Tissue\Adapter;
+namespace CL\Tissue\Util;
+
+use CL\Tissue\Adapter\AdapterInterface;
 
 class AdapterRegistry
 {

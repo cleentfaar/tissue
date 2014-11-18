@@ -16,6 +16,6 @@ class MockAdapterTest extends AbstractAdapterTestCase
 
     public function testEicarDetection()
     {
-        $this->markTestSkipped('Mock adapter has no way of detecting an EICAR infection');
+        //$this->markTestSkipped('Mock adapter has no way of detecting an EICAR infection');
     }
 }

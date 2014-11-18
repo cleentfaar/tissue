@@ -11,7 +11,7 @@
 
 namespace CL\Tissue\Tests\Adapter;
 
-use CL\Tissue\Adapter\AdapterRegistry;
+use CL\Tissue\Util\AdapterRegistry;
 
 class AdapterRegistryTest extends \PHPUnit_Framework_TestCase
 {
